@@ -1,0 +1,54 @@
+﻿@model TasksProjectMVC5App.Models.Task
+@{
+    ViewBag.Title = "Edit Task";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    if (@Model.id <= 0 || @Model == null)
+    {
+        <h2>Task does not exist.</h2>
+    }
+    else
+    {
+        if (string.IsNullOrWhiteSpace(Model.name))
+        { 
+            <h2>Edit Task</h2>
+        }
+        else
+        {
+            <h2>Edit Task - @Model.name</h2>
+        }
+
+        using (Html.BeginForm("Edit", "Tasks"))
+        {
+            @Html.HiddenFor(t => t.id)
+            @Html.ValidationMessageFor(m => m.id, "id Required", new { @class = "error" })
+            @Html.HiddenFor(t => t.dateCreated)
+            @Html.ValidationMessageFor(m => m.dateCreated, "Create Date Required", new { @class = "error" })
+            @Html.Hidden("CancelRedirectTo", Url.Action("Index", "Tasks"));
+            <div class="form-group">
+                @Html.LabelFor(t => t.name)
+                @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.name, "Name Required", new { @class = "error" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(t => t.description)
+                @Html.TextBoxFor(m => m.description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.description, "Description Required", new { @class = "error" })
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="button" class="btn btn-default" onclick="handlerCancel()">Cancel</button>
+        }
+    }
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+    function handlerCancel()
+    {
+        location.href = $('#CancelRedirectTo').val();
+    }
+    </script>
+}

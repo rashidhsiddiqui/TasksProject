@@ -1,0 +1,34 @@
+﻿@model TasksProjectMVC5App.Models.Task
+@{
+    ViewBag.Title = "New Task";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Task</h2>
+
+@using (Html.BeginForm("New", "Tasks"))
+{
+    @Html.Hidden("CancelRedirectTo", Url.Action("Index", "Tasks"));
+    <div class="form-group">
+        @Html.LabelFor(m => m.name)
+        @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.name, "Name Required", new { @class = "error" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.description)
+        @Html.TextBoxFor(m => m.description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.description, "Description Required", new { @class = "error" })
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-default" onclick="handlerCancel()">Cancel</button>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+    function handlerCancel()
+    {
+        location.href = $('#CancelRedirectTo').val();
+    }
+    </script>
+}
